@@ -4,6 +4,9 @@ This repository contains an experiment on how to properly test microservices tha
 The implementation is done in Java with Spring Boot, the message queue in question is Kafka.
 The principle should work everywhere though.
 
+It is assumed that you know about [event sourcing](http://martinfowler.com/eaaDev/EventSourcing.html) and
+[CQRS](http://martinfowler.com/bliki/CQRS.html).
+
 ## Setup
 
 The setup consists of two constellations. We limited ourselves to three services (A,B,C) and three events (E1, E2, E3).
@@ -109,6 +112,20 @@ The key insight now is to not only confirm to the current contract but to all of
     Both provider and consumer always have to confirm to the full history of contracts!
 
 ![Including the history](doc/simple-version-2-history.png)
+
+This way we can always be sure that the producer is emitting events that can be understood and that the consumer is able
+to work with the current events and the ones in the history.
+
+This rule is stronger as it has to be. The producer not necessarily has to confirm to all but the current contract. It
+forces full backwards compatibility though, which generally helps to keep the system evolvable. Also it ensures that
+the system still works even if your current consumer relies on features that are not present in the current contract
+but only in older versions. This in general is an error in the design then, but avoidable with this technique.
+
+### How does it work in larger systems?
+
+The interesting thing about this approach is that it scales with your system. So far we only covered the approach for
+two services talking to each other. But in fact it works for infinitly large systems.
+
 
 
 ## How to run the experiment
