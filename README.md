@@ -63,10 +63,31 @@ requirements for the event structure which also serves as input for the blackbox
 With this test we can verify that given a certain E2 we will trigger the right action on our side. Great. Now we know
 that our service behaves correctly.
 
-The next step now is to get the other side to deliver. To ensure this we create another C3B test for service A.
-This time we use the contract from B as verification for the output. Lets say service B confirms to the contract.
+The next step is to get the other side to deliver. To ensure this we create another C3B test for service A.
+This time we use the contract from B as verification for the output. This is done to ensure service B confirms to the
+contract.
 
 ![C3B for service A](doc/C3BAB-A.png)
+
+We now know that given the right impulse (a POST to "triggerE1") in service A will result in the correct event of type
+E1 published to the message queue. We also know that B reacts to events of type E1 in the correct way. With these two
+tests we can now show that our system actually works as expected. One of the upsides is that you can do this on component
+level. You do not have to maintain a staging system where you actually have a copy of your live system up and running.
+
+### Making changes
+
+So far we only discussed how it works for a static system. As we know systems are never static. Everything is changing all
+the time. In this paragraph we will be discussing how to make changes to such a system and still ensuring that it works.
+
+First lets look at the current situation:
+![The example from above](doc/simple-version-1.png)
+
+We have service B in version 1. For the sake of simplicity the version of B will always be the same as the current
+version of the contract (B in version 1 means contract with version 1). Service A in version 1 confirms to the contract
+of B (represented by the arrow). This means we can deploy both services together and they can interact. The tests will
+make sure that everything is working as expected.
+
+
 
 
 ## How to run the experiment
