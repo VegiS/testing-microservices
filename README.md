@@ -80,6 +80,7 @@ So far we only discussed how it works for a static system. As we know systems ar
 the time. In this paragraph we will be discussing how to make changes to such a system and still ensuring that it works.
 
 First lets look at the current situation:
+
 ![The example from above](doc/simple-version-1.png)
 
 We have service B in version 1. For the sake of simplicity the version of B will always be the same as the current
