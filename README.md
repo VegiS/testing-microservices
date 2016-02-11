@@ -46,10 +46,10 @@ then has to be distinguished by the application. All of this is doable but not p
 
 The solution that we propose with this document is to do `contract based black box testing`.
 
-A contract based black box test (CBBBT or C3B Test [KEB Test]) is a construct that combines consumer driven contract
-testing with black box testing. What you are doing is basically creating requirements for certain features on the
-consumer side and then documenting these in contracts. These contracts are then used as input for your own blackbox
-tests as well as as contract for the producing side.
+A contract based black box test (CBBBT or C3B Test [speak KEB Test]) is a construct that combines [consumer driven contract
+testing](http://martinfowler.com/articles/consumerDrivenContracts.html) with black box testing. What we are proposing is to
+create requirements for certain features on the consumer side and then documenting these in contracts.
+These contracts are then used as input for the blackbox tests of the consumer as well as as contract for the producing side.
 
 Lets consider example 1 again.
 ![simple A-B setup](doc/setupAB.png)
