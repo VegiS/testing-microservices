@@ -46,18 +46,27 @@ then has to be distinguished by the application. All of this is doable but not p
 
 The solution that we propose with this document is to do `contract based black box testing`.
 
-A contract based black box test (CBBB) is a construct that combines consumer driven contract testing with black box testing.
-What you are doing is basically creating requirements for certain features on the consumer side and then documenting these
-in contracts. These contracts are then used as input for your own blackbox tests as well as as contract for the producing side.
+A contract based black box test (CBBBT or C3B Test [KEB Test]) is a construct that combines consumer driven contract
+testing with black box testing. What you are doing is basically creating requirements for certain features on the
+consumer side and then documenting these in contracts. These contracts are then used as input for your own blackbox
+tests as well as as contract for the producing side.
 
 Lets consider example 1 again.
 ![simple A-B setup](doc/setupAB.png)
 
-First we create a CBBB for service B. This test specifies how the event E1 should look like. It uses a DSL to create
+First we create a C3B test for service B. This test specifies how the event E1 should look like. It uses a DSL to create
 requirements for the event structure which also serves as input for the blackbox tests. These blackbox tests verify that
  given a certain E2 the right outgoing behaviour is triggered (in this case calling a rest endpoint).
 
- TODO: Illustration
+![C3B for service B](doc/C3BAB-B.png)
+
+With this test we can verify that given a certain E2 we will trigger the right action on our side. Great. Now we know
+that our service behaves correctly.
+
+The next step now is to get the other side to deliver. To ensure this we create another C3B test for service A.
+This time we use the contract from B as verification for the output. Lets say service B confirms to the contract.
+
+![C3B for service A](doc/C3BAB-A.png)
 
 
 ## How to run the experiment
