@@ -4,12 +4,26 @@ This repository contains an experiment on how to properly test microservices tha
 The implementation is done in Java with Spring Boot, the message queue in question is Kafka.
 The principle should work everywhere though.
 
-It is assumed that you know about [event sourcing](http://martinfowler.com/eaaDev/EventSourcing.html) and
-[CQRS](http://martinfowler.com/bliki/CQRS.html).
+Table of Contents
+=================
+
+  * [Assumptions](#assumptions)
+  * [Setup](#setup)
+    * [Example 1 - simple A-B communication](#example-1---simple-a-b-communication)
+    * [Example 2 - three way communication](#example-2---three-way-communication)
+  * [The problem](#the-problem)
+  * [The solution](#the-solution)
+    * [Making changes](#making-changes)
+      * [Additional stability on the producer side](#additional-stability-on-the-producer-side)
+    * [How does it work in larger systems?](#how-does-it-work-in-larger-systems)
+  * [How to run the experiment](#how-to-run-the-experiment)
 
 ## Assumptions
 
-This document assumes that you are using an event sourcing system. This implies a couple of things:
+It is assumed that you know about [event sourcing](http://martinfowler.com/eaaDev/EventSourcing.html) and
+[CQRS](http://martinfowler.com/bliki/CQRS.html).
+
+Furthermore it is assumed that you are using an event sourcing system. This implies a couple of things:
 
 * Microservices do one thing, and one thing only.
 * Microservices do not talk to each other. Every services talks only to the message queue or external systems.
