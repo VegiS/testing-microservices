@@ -184,7 +184,7 @@ consequence leading to new versions for C and A being deployed.
 
 #### Performing a complex change
 
-Lets consider the worst caase scenario: A change in the requirements of D that actually effects all services except C.
+Lets consider the worst case scenario: A change in the requirements of D that actually effects all services except C.
 
 ![Changes in D](doc/system-D.png)
 
