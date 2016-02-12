@@ -107,21 +107,34 @@ confirming to the new contract.
 
 ![Broken contracts](doc/simple-version-2-broken.png)
 
-So.. we have to create a new version of service A that confirms to the new version of the contract.
+We have to create a new version of service A that confirms to the new version of the contract.
 
 ![A new version for A](doc/simple-version-2-fixed.png)
 
-Now we have a new version of both services which again can communicate with each other. 
+Now we have a new version of both services which again can communicate with each other.
+
+#### Additional stability on the producer side
+
+In theory it is enough for the producer to confirm to the current contract. We still recommend to use a stronger rule
+for stability.
+
+The problem with the described approach is that there is no fallback in case you have to roll back the consumer after
+the new version of the producer is live. To make sure that you only have to rollback one service and therefore contain
+the changes to a minimum we recommend to also let the producer confirm to at least the next older version of the consumer
+contract.
 
 ![Including the history](doc/simple-version-2-history.png)
 
 This way we can always be sure that the producer is emitting events that can be understood and that the consumer is able
-to work with the current events and the ones in the history.
+to work with the current events and the ones in the history, even if you have to rollback the consumer to the previous
+version.
 
-This rule is stronger as it has to be. The producer not necessarily has to confirm to all but the current contract. It
-forces full backwards compatibility though, which generally helps to keep the system evolvable. Also it ensures that
+You can go even stronger from here and force the producer to confirm to all versions of all contracts of all consumers.
+this forces full backwards compatibility, which generally helps to keep the system evolvable. Also it ensures that
 the system still works even if your current consumer relies on features that are not present in the current contract
 but only in older versions. This in general is an error in the design then, but avoidable with this technique.
+
+The exact tradeoffs here are highly individual and depend solely on the situation at hand.
 
 ### How does it work in larger systems?
 
