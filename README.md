@@ -7,6 +7,18 @@ The principle should work everywhere though.
 It is assumed that you know about [event sourcing](http://martinfowler.com/eaaDev/EventSourcing.html) and
 [CQRS](http://martinfowler.com/bliki/CQRS.html).
 
+## Assumptions
+
+This document assumes that you are using an event sourcing system. This implies a couple of things:
+
+* Microservices do one thing, and one thing only.
+* Microservices do not talk to each other. Every services talks only to the message queue or external systems.
+* All state is in the message queue.
+* Upon crashing a service is restarted and recreates its state from the message queue. No service based state store exists.
+
+TODO: as soon as the theory is complete, revisit this part and verify if the basic assumptions can be loosened or removed
+all together.
+
 ## Setup
 
 The setup consists of two constellations. We limited ourselves to three services (A,B,C) and three events (E1, E2, E3).
