@@ -87,16 +87,23 @@ First lets look at the current situation:
 ![The example from above](doc/simple-version-1.png)
 
 We have service B in version 1. For the sake of simplicity the version of B will always be the same as the current
-version of the contract (B in version 1 means contract with version 1). Service A in version 1 confirms to the contract
-of B (represented by the arrow). This means we can deploy both services together and they can interact. The tests described
-above are showing us that this works.
+version of the contract (B in version 1 means contract with version 1). **A consumer always has to confirm to its own
+contract**. Service A in version 1 confirms to the contract of B (represented by the arrow).
+This means we can deploy both services together and they can interact. The tests described above are showing us that
+this works.
 
 Now the requirements for B change. We have to change the behaviour of the service in a way that actually affects the
 contract. This results in a new version of the contract being published.
 
 ![A new version for B](doc/simple-version-2.png)
 
-We run the tests for A again and discover that the producer is not confirming to the new contract.
+The first thing we have to make sure is that our consumer is backwards compatible. As the old events will stay in the
+history this is the only way to make sure that B is still able to consume the whole history of events without struggling.
+
+![A new version for B](doc/simple-version-2-contract.png)
+
+Now that we know our consumer will still work we can run the tests for A again and discover that the producer is not
+confirming to the new contract.
 
 ![Broken contracts](doc/simple-version-2-broken.png)
 
@@ -104,12 +111,7 @@ So.. we have to create a new version of service A that confirms to the new versi
 
 ![A new version for A](doc/simple-version-2-fixed.png)
 
-Now we have a new version of both services which again can communicate with each other. The problem that we have now is
-that the history in our queue might be older and contain more events of the old version.
-
-The key insight now is to not only confirm to the current contract but to all of them.
-
-    Both provider and consumer always have to confirm to the full history of contracts!
+Now we have a new version of both services which again can communicate with each other. 
 
 ![Including the history](doc/simple-version-2-history.png)
 
