@@ -16,6 +16,8 @@ Table of Contents
     * [Making changes](#making-changes)
       * [Additional stability on the producer side](#additional-stability-on-the-producer-side)
     * [How does it work in larger systems?](#how-does-it-work-in-larger-systems)
+      * [The simple example visualized](#the-simple-example-visualized)
+      * [performing a complex change](#performing-a-complex-change)
   * [How to run the experiment](#how-to-run-the-experiment)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
