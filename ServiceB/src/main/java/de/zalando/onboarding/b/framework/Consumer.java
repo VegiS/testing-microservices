@@ -28,6 +28,7 @@ public class Consumer {
     @Scheduled(fixedDelay = 3000)
     public void consume() throws IOException {
         List<E1> events = kafkaConnector.poll();
+        LOG.info("Consuming [{}] events.", events.size());
 
         events.forEach(businessLogic::consume);
     }

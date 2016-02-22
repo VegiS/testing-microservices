@@ -16,4 +16,8 @@ public class E1 {
     public E1(@JsonProperty("id") UUID id) {
         this.id = id;
     }
+
+    public UUID getId() {
+        return id;
+    }
 }
