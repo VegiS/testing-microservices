@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -25,11 +26,9 @@ public class Consumer {
     }
 
     @Scheduled(fixedDelay = 3000)
-    public void consume() {
+    public void consume() throws IOException {
         List<E1> events = kafkaConnector.poll();
 
-        for (E1 event : events) {
-            businessLogic.consume(event);
-        }
+        events.forEach(businessLogic::consume);
     }
 }

@@ -21,6 +21,9 @@ public class BusinessLogic {
     }
 
     public void consume(E1 event) {
-        connector.triggerExternalE1();
+        // This has to be tested with a dedicated unit test
+        if (event != null) {
+            connector.triggerExternalE1();
+        }
     }
 }

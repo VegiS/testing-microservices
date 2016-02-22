@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Test"
+  },
+  {
+    "name": ""
+  },
+  {
+    "name": "This is a very long text that should normally not happen"
+  }
+]
