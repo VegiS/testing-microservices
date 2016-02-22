@@ -89,7 +89,7 @@ Lets consider example 1 again.
 
 First we create a C3B test for service B. This test specifies how the event E1 should look like. It uses a DSL to create
 requirements for the event structure which also serves as input for the blackbox tests. These blackbox tests verify that
- given a certain E2 the right outgoing behaviour is triggered (in this case calling a rest endpoint).
+ given a certain E1 the right outgoing behaviour is triggered (in this case calling a rest endpoint).
 
 ![C3B for service B](doc/C3BAB-B.png)
 
