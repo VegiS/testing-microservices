@@ -4,8 +4,8 @@
   "description": "Contract specification for E1 as consumed by ServiceB",
   "type": "object",
   "properties": {
-    "name": {
-      "type": "string"
+    "id": {
+      "type": "uuid"
     }
   }
 }

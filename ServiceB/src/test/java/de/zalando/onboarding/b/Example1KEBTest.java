@@ -1,15 +1,10 @@
 package de.zalando.onboarding.b;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.zalando.onboarding.b.events.E1;
-import de.zalando.onboarding.b.framework.*;
-import de.zalando.onboarding.b.keb.ExampleProvider;
+import de.zalando.onboarding.b.framework.Consumer;
+import de.zalando.onboarding.b.framework.ExternalSystemConnector;
 import de.zalando.onboarding.b.logic.BusinessLogic;
+import de.zalando.toga.provider.ExampleProviderRule;
 import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -18,28 +13,30 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
 import javax.inject.Inject;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static de.zalando.onboarding.b.keb.ExampleProvider.Versions.ALL;
-import static junitparams.JUnitParamsRunner.$;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static java.util.regex.Pattern.compile;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * This is the test that actually verifies that service B conforms to its own
@@ -54,6 +51,9 @@ public class Example1KEBTest {
 
     @Rule
     public final SpringMethodRule SPRING_METHOD_RULE = new SpringMethodRule();
+
+    @Rule
+    public final ExampleProviderRule examples = new ExampleProviderRule(new File("testData"), compile("E1-ServiceB"));
 
     @Configuration
     @EnableAutoConfiguration
@@ -85,8 +85,7 @@ public class Example1KEBTest {
     BusinessLogic businessLogic;
 
     @Test
-    @Parameters
-    public void verifyE1(String input) throws IOException {
+    public void verifyE1() throws IOException {
         // Spring is calling the JDKs threadpoolexecutor under the hood
         // which is executing the task at startup once. so to properly test it
         // you have to either ask for two invocations or reset the mock.
@@ -95,7 +94,8 @@ public class Example1KEBTest {
         reset(externalSystemConnector);
 
         List<ConsumerRecord<String, String>> consumerRecords = new ArrayList<>();
-        consumerRecords.add(new ConsumerRecord<String, String>("test", 1, 0, "randomKey", input));
+        String input = examples.getExampleJson();
+        consumerRecords.add(new ConsumerRecord<>("test", 1, 0, "randomKey", input));
 
         Map<TopicPartition, List<ConsumerRecord<String, String>>> map = new HashMap<>();
         map.put(new TopicPartition("test", 1), consumerRecords);
@@ -107,27 +107,4 @@ public class Example1KEBTest {
 
         verify(externalSystemConnector, times(1)).triggerExternalE1();
     }
-
-    public Object[] parametersForVerifyE1() throws IOException {
-
-        ExampleProvider exampleProvider = new ExampleProvider(new File("testData"));
-
-
-        List<String> examples = exampleProvider.getExamples("E1", "ServiceB", ALL);
-
-        Object[] params = new Object[examples.size()];
-
-        /*for (int i = 0; i < examples.size(); i++) {
-            ArrayList<ExampleHolder> example = new ArrayList<>();
-            example.add(examples.get(i));
-            params[i] = new Object[] {example};
-        }*/
-
-        for (int i = 0; i < examples.size(); i++) {
-            params[i] = new Object[] {examples.get(i)};
-        }
-
-        return params;
-    }
-
 }
